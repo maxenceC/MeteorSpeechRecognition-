@@ -1,4 +1,4 @@
-Items.allow({
+Recordings.allow({
   'insert': function(userId, doc) {
     return userId;
   },
