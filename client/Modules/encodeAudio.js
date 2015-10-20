@@ -22,7 +22,7 @@ var _setCompatibility = function () {
 
 var _record = function (context) {
     // ask for permission and start recording
-    navigator.getUserMedia({audio: true}, function(localMediaStream){
+    navigator.getUserMedia({audio: true}, function (localMediaStream) {
         mediaStream = localMediaStream;
 
         // create a stream source to pass to Recorder.js
@@ -31,14 +31,13 @@ var _record = function (context) {
         // create new instance of Recorder.js using the mediaStreamSource
         rec = new Recorder(mediaStreamSource);
 
-        // start recording
         rec.record();
-    }, function(err){
+    }, function () {
         console.log('Browser not supported');
     });
 };
 
-var _stopRecording = function() {
+var _stopRecording = function () {
     // stop the media stream
     mediaStream.stop();
 
@@ -46,17 +45,17 @@ var _stopRecording = function() {
     rec.stop();
 
     // export it to WAV
-    rec.exportWAV(function(e){
+    rec.exportWAV(function (e) {
         rec.clear();
-        Recorder.forceDownload(e, "filename.wav");
+        Recorder.forceDownload(e, "recording.wav");
     });
 };
 
 var recordAudio = function (options) {
-    if (options.start) {
+    if (options.action === 'start') {
         var audioContext = _setCompatibility();
         var record = _record(audioContext);
-    }else {
+    } else if (options.action === 'stop') {
         _stopRecording();
     }
 };
