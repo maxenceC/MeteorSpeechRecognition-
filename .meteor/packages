@@ -12,7 +12,6 @@ momentjs:moment
 underscorestring:underscore.string
 matb33:collection-hooks
 iron:router@1.0.0
-yasinuslu:blaze-meta
 useraccounts:iron-routing
 standard-minifiers
 meteor-base
