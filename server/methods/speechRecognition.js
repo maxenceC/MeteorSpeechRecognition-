@@ -1,19 +1,19 @@
 /**
  * Created by maxencecornet on 21/10/15.
  */
-FormData = function() {
+FormData = function () {
     this._parts = {};
 };
 
-FormData.prototype.append = function(name, part) {
+FormData.prototype.append = function (name, part) {
     this._parts[name] = part;
 };
 
-FormData.prototype.generate = function() {
+FormData.prototype.generate = function () {
     var boundary = Date.now();
     var bodyParts = [];
 
-    _.each(this._parts, function(part, name) {
+    _.each(this._parts, function (part, name) {
         part.data = (new Buffer(part.data)).toString('base64');
 
         bodyParts.push(
@@ -35,8 +35,24 @@ FormData.prototype.generate = function() {
     }
 };
 
-
-
+var _checkJobStatus = function (jobID) {
+    return HTTP.post('https://api.idolondemand.com/1/job/status/' + jobID, {
+        params: {
+            apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66"
+        }
+    }, function (error, result) {
+        if (error) {
+            console.log('Error whren checking job status : ' + error)
+        } else if (result.data.actions[0].result) {
+            console.log(result.data.actions[0].result.document[0].content);
+            return result.data.actions[0].result.document[0].content;
+        } else {
+            Meteor.setTimeout(function () {
+                _checkJobStatus(result.data.jobID)
+            }, 2200)
+        }
+    })
+};
 
 Meteor.methods({
     uploadFile: function (file) {
@@ -52,15 +68,19 @@ Meteor.methods({
 
         var generated = fd.generate();
 
-        HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
+        return HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
             params: {
                 apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66",
             },
             headers: generated.headers,
             content: generated.body
         }, function (error, result) {
-            console.log(error);
-            console.log(result);
+            if (error) {
+                console.log('Error when posting to Haven OnDemand :' + error);
+            } else if (result) {
+                return _checkJobStatus(result.data.jobID);
+            }
         });
     }
 });
+

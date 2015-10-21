@@ -11,7 +11,9 @@ Template.home.events({
         Modules.client.recordAudio({action: 'stop'});
     },
     'click #upload': function() {
-        Meteor.call('uploadFile');
+        Meteor.call('uploadFile', function(error, result) {
+            $('#transcript').val(result);
+        });
     }
 });
 
