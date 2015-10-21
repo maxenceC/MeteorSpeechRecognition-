@@ -9,6 +9,9 @@ Template.home.events({
     },
     'click #stop': function () {
         Modules.client.recordAudio({action: 'stop'});
+    },
+    'click #upload': function() {
+        Meteor.call('uploadFile');
     }
 });
 
