@@ -1,5 +1,5 @@
 Template.home.rendered = function () {
-
+    $('.loading').hide()
 };
 
 Template.home.events({

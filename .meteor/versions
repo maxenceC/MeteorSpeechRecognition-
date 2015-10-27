@@ -26,7 +26,6 @@ deps@1.0.9
 diff-sequence@1.0.1
 ecmascript@0.1.6
 ecmascript-runtime@0.2.6
-edgee:slingshot@0.7.1
 ejson@1.0.7
 email@1.0.8
 fastclick@1.0.7

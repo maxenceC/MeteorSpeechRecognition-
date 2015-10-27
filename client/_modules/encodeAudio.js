@@ -40,9 +40,12 @@ var _record = function (context) {
 var _grabAndDisplayTranscriptContent = function () {
     Meteor.call('returnTranscriptContent', function (error, result) {
         Session.set("data", result);
-        $('#transcript').html(Session.get("data"));
+        if (result) {
+            $('#transcript').html(Session.get("data"));
+            $('.loading').hide()
+        }
         Meteor.setTimeout(function () {
-            grabContent();
+            _grabAndDisplayTranscriptContent();
         }, 2200)
     });
 };
@@ -76,6 +79,7 @@ var _stopRecording = function () {
 
 var recordAudio = function (options) {
     if (options.action === 'start') {
+        $('.loading').show();
         var audioContext = _setCompatibility();
         var record = _record(audioContext);
     } else if (options.action === 'stop') {
