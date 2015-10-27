@@ -47,7 +47,22 @@ var _stopRecording = function () {
     // export it to WAV
     rec.exportWAV(function (e) {
         rec.clear();
-        Recorder.forceDownload(e, "recording.wav");
+        //Recorder.forceDownload(e, "recording.wav");
+
+        function readFile(file, callback){
+            var fileReader = new FileReader();
+            fileReader.onloadend = callback;
+            fileReader.readAsArrayBuffer( file );
+        }
+
+        readFile(e, function(e) {
+            var test = new Uint8Array(e.target.result);
+            console.log(test);
+            Meteor.call('uploadFile',test);
+        });
+
+
+
     });
 };
 

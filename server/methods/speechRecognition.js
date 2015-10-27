@@ -56,14 +56,16 @@ var _checkJobStatus = function (jobID) {
 
 Meteor.methods({
     uploadFile: function (file) {
-        var filo = Assets.getBinary('longer.wav');
+        //var filo = Assets.getBinary('longer.wav');
 
+
+        //console.log(file);
         var fd = new FormData;
 
         fd.append('file', {
             contentType: 'audio/wav',
             filename: 'longer.wav',
-            data: filo
+            data: file
         });
 
         var generated = fd.generate();
@@ -78,6 +80,7 @@ Meteor.methods({
             if (error) {
                 console.log('Error when posting to Haven OnDemand :' + error);
             } else if (result) {
+                console.log('Success when posting to Haven OnDemand :' + result.data.jobID);
                 return _checkJobStatus(result.data.jobID);
             }
         });
