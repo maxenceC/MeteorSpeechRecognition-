@@ -1,4 +1,4 @@
-# meteor-boilerplate
+# Meteor Speech Recognition
 
 A sample Meteor app using Haven OnDemand Speech Recognition API, with recorderJS to capture user web browser Audio stream and get a text transcript of it.
 
@@ -6,23 +6,24 @@ A sample Meteor app using Haven OnDemand Speech Recognition API, with recorderJS
 * [Dependencies](#dependencies)
 
 
-
 ## <a name="installation"></a> Installation
 
-1. Clone this repo to `<yourapp>`
+1. Sign up for a [Haven OnDemand developer account here](https://www.havenondemand.com/signup.html)
 
-  `git clone https://github.com/Differential/meteor-boilerplate.git <yourapp>`
+2. In speechRecognition.js, add your key :
 
-2. Remove `.git`
+  `params: {
+               apikey: "YOUR KEY HERE"
+           }`
 
-  `cd <yourapp> && rm -rf .git`
+3. Clone this repo to <yourapp> :
 
-3. Start coding!
+  'git clone https://github.com/maxenceC/MeteorSpeechRecognition-.git <yourapp>'
 
-## <a name="file-structure"></a> File Structure
+4. Run locally :
 
-We have a common file structure we use across all of our Meteor apps. Client-only files are stored in the `client` directory, server-only files are stored in the `server` directory, and shared files are stored in the `both` directory. The `private` and `public` directories are for either private or public assets. 
-
+    'cd <yourapp>'
+    'meteor'
 
 ## <a name="dependencies"></a> Dependencies
 
