@@ -7,7 +7,7 @@ TranscriptContent = null;
 var _checkJobStatus = function (jobID) {
     HTTP.post('https://api.idolondemand.com/1/job/status/' + jobID, {
         params: {
-            apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66"
+            apikey: "Your API key"
         }
     }, function (error, result) {
         if (error) {
@@ -37,7 +37,7 @@ Meteor.methods({
 
         HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
             params: {
-                apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66"
+                apikey: "Your API key"
             },
             headers: generated.headers,
             content: generated.body
