@@ -39,7 +39,7 @@ FormData.prototype.generate = function () {
 };
 
 var _checkJobStatus = function (jobID) {
-    return HTTP.post('https://api.idolondemand.com/1/job/status/' + jobID, {
+    HTTP.post('https://api.idolondemand.com/1/job/status/' + jobID, {
         params: {
             apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66"
         }
@@ -48,9 +48,7 @@ var _checkJobStatus = function (jobID) {
             console.log('Error when checking job status : ' + error)
         } else if (result.data.actions[0].result) {
             TranscriptContent = result.data.actions[0].result.document[0].content;
-            console.log(result.data.actions[0].result.document[0].content);
-            console.log(TranscriptContent);
-            return result.data.actions[0].result.document[0].content;
+            console.log('Transcript content result : ' + TranscriptContent);
         } else {
             Meteor.setTimeout(function () {
                 _checkJobStatus(result.data.jobID)
@@ -82,12 +80,11 @@ Meteor.methods({
                 console.log('Error when posting to Haven OnDemand :' + error);
             } else if (result) {
                 console.log('Success when posting to Haven OnDemand :' + result.data.jobID);
-                return _checkJobStatus(result.data.jobID);
+                _checkJobStatus(result.data.jobID);
             }
         });
     },
-    returnTranscriptContent: function() {
-        console.log('returntranscriptContent : '+TranscriptContent);
+    returnTranscriptContent: function () {
         return TranscriptContent;
     }
 });

@@ -37,6 +37,23 @@ var _record = function (context) {
     });
 };
 
+var _grabAndDisplayTranscriptContent = function () {
+    Meteor.call('returnTranscriptContent', function (error, result) {
+        Session.set("data", result);
+        $('#transcript').html(Session.get("data"));
+        Meteor.setTimeout(function () {
+            grabContent();
+        }, 2200)
+    });
+};
+
+//convert Blob to ArrayBuffer
+var _convertToArrayBuffer = function (file, callback) {
+    var fileReader = new FileReader();
+    fileReader.onloadend = callback;
+    fileReader.readAsArrayBuffer(file);
+};
+
 var _stopRecording = function () {
     // stop the media stream
     mediaStream.stop();
@@ -47,41 +64,11 @@ var _stopRecording = function () {
     // export it to WAV
     rec.exportWAV(function (e) {
         rec.clear();
-        //Recorder.forceDownload(e, "recording.wav");
 
-        function readFile(file, callback){
-            var fileReader = new FileReader();
-            fileReader.onloadend = callback;
-            fileReader.readAsArrayBuffer( file );
-        }
-
-        var callback = function(e) {
-            console.log(e);
-            $('#transcript').val(e);
-        };
-
-        var grabContent = function () {
-            console.log('lauch again');
-            Meteor.call('returnTranscriptContent', function (error, result) {
-                Session.set("data", result);
-                $('#transcript').html(Session.get("data"));
-                /*
-                if (Session.get("data")) {
-
-                }
-                */
-                Meteor.setTimeout(function () {
-                    grabContent();
-                }, 1200)
-
-            });
-        };
-
-        readFile(e, function (e) {
-            var test = new Uint8Array(e.target.result);
-            console.log(test);
-            Meteor.call('uploadFile', test, function (error, result) {
-                grabContent();
+        _convertToArrayBuffer(e, function (e) {
+            var newFile = new Uint8Array(e.target.result);
+            Meteor.call('uploadFile', newFile, function () {
+                _grabAndDisplayTranscriptContent();
             });
         });
     });

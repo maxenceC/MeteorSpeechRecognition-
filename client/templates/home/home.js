@@ -1,9 +1,5 @@
 Template.home.rendered = function () {
 
-    Tracker.autorun(function () {
-        var result = Session.get('')
-    });
-
 };
 
 Template.home.events({
