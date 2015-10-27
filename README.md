@@ -2,7 +2,6 @@
 
 A sample Meteor app using Haven OnDemand Speech Recognition API, with recorderJS to capture user web browser Audio stream and get a text transcript of it.
 
-A demo is available [here](http://meteorspeechrecognition.meteor.com/)
 
 * [Installation](#installation)
 * [Dependencies](#dependencies)
