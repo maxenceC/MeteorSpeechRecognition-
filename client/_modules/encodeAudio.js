@@ -55,14 +55,35 @@ var _stopRecording = function () {
             fileReader.readAsArrayBuffer( file );
         }
 
-        readFile(e, function(e) {
+        var callback = function(e) {
+            console.log(e);
+            $('#transcript').val(e);
+        };
+
+        var grabContent = function () {
+            console.log('lauch again');
+            Meteor.call('returnTranscriptContent', function (error, result) {
+                Session.set("data", result);
+                $('#transcript').html(Session.get("data"));
+                /*
+                if (Session.get("data")) {
+
+                }
+                */
+                Meteor.setTimeout(function () {
+                    grabContent();
+                }, 1200)
+
+            });
+        };
+
+        readFile(e, function (e) {
             var test = new Uint8Array(e.target.result);
             console.log(test);
-            Meteor.call('uploadFile',test);
+            Meteor.call('uploadFile', test, function (error, result) {
+                grabContent();
+            });
         });
-
-
-
     });
 };
 

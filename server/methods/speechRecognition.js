@@ -1,6 +1,9 @@
 /**
  * Created by maxencecornet on 21/10/15.
  */
+
+TranscriptContent = null;
+
 FormData = function () {
     this._parts = {};
 };
@@ -29,7 +32,7 @@ FormData.prototype.generate = function () {
 
     return {
         headers: {
-            'Content-Type': 'multipart/form-data; boundary=' + boundary,
+            'Content-Type': 'multipart/form-data; boundary=' + boundary
         },
         body: bodyParts.join('\r\n')
     }
@@ -42,9 +45,11 @@ var _checkJobStatus = function (jobID) {
         }
     }, function (error, result) {
         if (error) {
-            console.log('Error whren checking job status : ' + error)
+            console.log('Error when checking job status : ' + error)
         } else if (result.data.actions[0].result) {
+            TranscriptContent = result.data.actions[0].result.document[0].content;
             console.log(result.data.actions[0].result.document[0].content);
+            console.log(TranscriptContent);
             return result.data.actions[0].result.document[0].content;
         } else {
             Meteor.setTimeout(function () {
@@ -56,10 +61,6 @@ var _checkJobStatus = function (jobID) {
 
 Meteor.methods({
     uploadFile: function (file) {
-        //var filo = Assets.getBinary('longer.wav');
-
-
-        //console.log(file);
         var fd = new FormData;
 
         fd.append('file', {
@@ -70,9 +71,9 @@ Meteor.methods({
 
         var generated = fd.generate();
 
-        return HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
+        HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
             params: {
-                apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66",
+                apikey: "0103cf46-2d52-4ba6-b350-3fb689e43b66"
             },
             headers: generated.headers,
             content: generated.body
@@ -84,6 +85,10 @@ Meteor.methods({
                 return _checkJobStatus(result.data.jobID);
             }
         });
+    },
+    returnTranscriptContent: function() {
+        console.log('returntranscriptContent : '+TranscriptContent);
+        return TranscriptContent;
     }
 });
 

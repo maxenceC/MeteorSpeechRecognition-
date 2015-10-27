@@ -1,5 +1,9 @@
 Template.home.rendered = function () {
 
+    Tracker.autorun(function () {
+        var result = Session.get('')
+    });
+
 };
 
 Template.home.events({
@@ -9,11 +13,6 @@ Template.home.events({
     },
     'click #stop': function () {
         Modules.client.recordAudio({action: 'stop'});
-    },
-    'click #upload': function() {
-        Meteor.call('uploadFile', function(error, result) {
-            $('#transcript').val(result);
-        });
     }
 });
 
