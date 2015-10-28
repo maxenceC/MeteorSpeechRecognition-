@@ -4,6 +4,7 @@
 
 TranscriptContent = null;
 
+// This is a polling method, which calls itself every 2.2 seconds to check if the transcript is ready, using the jobID provided by uploadFile()'s return value
 var _checkJobStatus = function (jobID) {
     HTTP.post('https://api.idolondemand.com/1/job/status/' + jobID, {
         params: {
@@ -16,6 +17,7 @@ var _checkJobStatus = function (jobID) {
             TranscriptContent = result.data.actions[0].result.document[0].content;
             console.log('Transcript content result : ' + TranscriptContent);
         } else {
+            // Calling itself every 2.2 seconds until the text transcript is ready
             Meteor.setTimeout(function () {
                 _checkJobStatus(result.data.jobID)
             }, 2200)
@@ -25,6 +27,8 @@ var _checkJobStatus = function (jobID) {
 
 Meteor.methods({
     uploadFile: function (file) {
+
+        // Generate a multipart file from the audio blob
         var fd = new FormData;
 
         fd.append('file', {
@@ -35,6 +39,8 @@ Meteor.methods({
 
         var generated = fd.generate();
 
+        // Upload the file to Haven OnDemand speech recognition API, which task works asynchronously and return a JobID
+        // This jobID is used to poll the status of the speech recognition task
         HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
             params: {
                 apikey: "Your API key"
@@ -50,6 +56,7 @@ Meteor.methods({
             }
         });
     },
+    // Return the value of the transcript to the client
     returnTranscriptContent: function () {
         return TranscriptContent;
     }
