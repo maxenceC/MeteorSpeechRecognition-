@@ -1,5 +1,7 @@
 # Meteor Speech Recognition
 
+Source code of [this tutorial](https://community.havenondemand.com/t5/Blog/Building-a-Speech-Recognition-app-with-Meteor-framework/ba-p/2372)
+
 A sample Meteor app using Haven OnDemand Speech Recognition API, with recorderJS to capture user web browser Audio stream and get a text transcript of it.
 
 
