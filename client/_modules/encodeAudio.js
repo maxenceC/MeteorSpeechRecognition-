@@ -58,8 +58,12 @@ var _convertToArrayBuffer = function (file, callback) {
 };
 
 var _stopRecording = function () {
-    // stop the media stream
-    mediaStream.getTracks()[0].stop();
+    // stop the media stream -- mediaStream.stop() is deprecated in Chrome 45
+    if (mediaStream.stop()) {
+        mediaStream.stop()
+    }else {
+        mediaStream.getTracks()[0].stop();
+    }
 
     // stop Recorder.js
     rec.stop();
