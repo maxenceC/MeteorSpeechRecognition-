@@ -59,7 +59,7 @@ var _convertToArrayBuffer = function (file, callback) {
 
 var _stopRecording = function () {
     // stop the media stream
-    mediaStream.stop();
+    mediaStream.getTracks()[0].stop();
 
     // stop Recorder.js
     rec.stop();
