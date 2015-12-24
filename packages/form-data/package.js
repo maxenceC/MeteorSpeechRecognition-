@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'maxencec:form-data',
+  name: 'maxencecornet:form-data',
   version: '0.0.1',
   // Brief, one-line summary of the package.
-  summary: 'Generate multipart/form-data from array buffer (Uint8Array), used to upload files to external servers using APIs',
+  summary: 'Generate multipart/form-data from array buffer (Uint8Array).',
   // URL to the Git repository containing the source code for this package.
   git: 'https://github.com/maxenceC/meteor-form-data',
   // By default, Meteor will default to using README.md for documentation.
@@ -20,6 +20,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('maxencec:form-data');
+  api.use('maxencecornet:form-data');
   api.addFiles('form-data-tests.js');
 });
