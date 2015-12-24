@@ -9,49 +9,39 @@ Generate multipart/form-data from array buffer (Uint8Array), used to upload file
 ```javascript
 
 FromData has 2 methods : append() and generate().
-
-append() : 
-
-FormData.prototype.append = function (name, part) {
-    this._parts[name] = part;
-};
-
-generate() : 
-
-Returns and object with headers and body params.
  
 ```
 
 ## Usage
 
 ```javascript
-  /*
-     Upload audio file to Haven OnDemand speech recognition API
-  */
+/*
+Upload audio file to Haven OnDemand speech recognition API
+*/
 
-   var fd = new FormData;
-   // Here file is an empty array buffer, but you should have a content 
-   var file = new Uint8Array();
+var fd = new FormData;
+// Here var file is an empty array buffer, but you should have a content 
+var file = new Uint8Array();
   
-   fd.append('file', {
-        contentType: 'audio/wav',
-        filename: 'longer.wav',
-        data: file
-   });
+fd.append('file', {
+    contentType: 'audio/wav',
+    filename: 'longer.wav',
+    data: file
+});
   
-   var generated = fd.generate();
+var generated = fd.generate();
   
-   HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
-        params: {
-            apikey: "Your API key"
-        },
+HTTP.post('https://api.idolondemand.com/1/api/async/recognizespeech/v1', {
+    params: {
+        apikey: "Your API key"
+    },
         headers: generated.headers,
         content: generated.body
-        }, function (error, result) {
-            if (error) {
-                console.log('Error when posting to Haven OnDemand :' + error);
-            } else if (result) {
-                console.log('Success when posting to Haven OnDemand :' + result.data.jobID); 
-            }
-        });
+}, function (error, result) {
+    if (error) {
+        console.log('Error when posting to Haven OnDemand :' + error);
+    } else if (result) {
+        console.log('Success when posting to Haven OnDemand :' + result.data.jobID);
+    }
+});
 ```
