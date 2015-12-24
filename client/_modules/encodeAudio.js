@@ -32,21 +32,29 @@ var _record = function (context) {
         rec = new Recorder(mediaStreamSource);
 
         rec.record();
-    }, function () {
-        console.log('Browser not supported');
+    }, function (err) {
+        console.log('Browser not supported : ' + err);
+        _displayError(err);
     });
+};
+
+var _displayError = function (error) {
+    $('#err').html('Error : '+error.message);
+    $('#recordingON').hide();
+    $('#err').show();
 };
 
 var _grabAndDisplayTranscriptContent = function () {
     Meteor.call('returnTranscriptContent', function (error, result) {
-        Session.set("data", result);
         if (result) {
-            $('#transcript').html(Session.get("data"));
-            $('.loading').hide()
+            $('#transcript').html(result);
+            $('.loading').hide();
+            $('#result').show();
+        } else {
+            Meteor.setTimeout(function () {
+                _grabAndDisplayTranscriptContent();
+            }, 300)
         }
-        Meteor.setTimeout(function () {
-            _grabAndDisplayTranscriptContent();
-        }, 2200)
     });
 };
 
@@ -59,9 +67,9 @@ var _convertToArrayBuffer = function (file, callback) {
 
 var _stopRecording = function () {
     // stop the media stream -- mediaStream.stop() is deprecated in Chrome 45
-    if (mediaStream.stop()) {
+    if (typeof(mediaStream.stop) === 'function') {
         mediaStream.stop()
-    }else {
+    } else {
         mediaStream.getTracks()[0].stop();
     }
 
@@ -83,11 +91,14 @@ var _stopRecording = function () {
 
 var recordAudio = function (options) {
     if (options.action === 'start') {
-        $('.loading').show();
         var audioContext = _setCompatibility();
         var record = _record(audioContext);
+        $('#recordingON').show();
+        $('#result').hide();
     } else if (options.action === 'stop') {
         _stopRecording();
+        $('.loading').show();
+        $('#recordingON').hide();
     }
 };
 

@@ -17,10 +17,10 @@ var _checkJobStatus = function (jobID) {
             TranscriptContent = result.data.actions[0].result.document[0].content;
             console.log('Transcript content result : ' + TranscriptContent);
         } else {
-            // Calling itself every 2.2 seconds until the text transcript is ready
+            // Calling itself every 0.3 seconds until the text transcript is ready
             Meteor.setTimeout(function () {
                 _checkJobStatus(result.data.jobID)
-            }, 2200)
+            }, 300)
         }
     })
 };
@@ -58,7 +58,9 @@ Meteor.methods({
     },
     // Return the value of the transcript to the client
     returnTranscriptContent: function () {
-        return TranscriptContent;
+        result = TranscriptContent;
+        TranscriptContent = 0;
+        return result;
     }
 });
 

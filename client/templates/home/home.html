@@ -1,15 +1,16 @@
 <template name="home">
     <div class="template-home">
-        <div class="page-header">
-            <h3>Sample Meteor app using Haven OnDemand Speech Recognition</h3>
-        </div>
         <button class="btn btn-primary" id="record">Record</button>
-        <button class="btn btn-primary" id="stop">Stop & get transcript</button>
+        <button class="btn btn-primary" id="stop">Stop recording & get transcript</button>
         <div style="margin-top: 20px;margin-bottom: 800px">
-            <h3>Transcript result :</h3>
-            <p id="transcript" style="font-size: 18px"></p>
+            <p id="recordingON" style="font-size: 18px;">Currently recording...</p>
             {{>loading}}
-        </div>
+            <div id="result">
+                <h4>Transcript result :</h4>
+                <p id="transcript" style="font-size: 18px"></p>
+            </div>
 
+            <p id="err" style="color: red;"></p>
+        </div>
     </div>
 </template>
